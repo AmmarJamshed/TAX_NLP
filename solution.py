@@ -4,6 +4,24 @@
 # In[1]:
 
 
+import nltk
+import os
+
+# Set a persistent download directory inside Streamlit's temp folder
+nltk_data_path = os.path.join(os.getcwd(), "nltk_data")
+os.makedirs(nltk_data_path, exist_ok=True)
+nltk.data.path.append(nltk_data_path)
+
+# Download NLTK resources if not already downloaded
+nltk_resources = [
+    "punkt", "stopwords", "averaged_perceptron_tagger", "maxent_ne_chunker", "words"
+]
+
+for resource in nltk_resources:
+    try:
+        nltk.data.find(f"tokenizers/{resource}")
+    except LookupError:
+        nltk.download(resource, download_dir=nltk_data_path)
 import streamlit as st
 import pandas as pd
 import nltk
@@ -11,13 +29,6 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk import pos_tag, ne_chunk
 from textblob import TextBlob
-
-# Download necessary NLTK resources
-nltk.download("punkt")
-nltk.download("stopwords")
-nltk.download("averaged_perceptron_tagger")
-nltk.download("maxent_ne_chunker")
-nltk.download("words")
 
 # Streamlit App Title
 st.title("📊 NLP in Taxation - Analyze Unstructured Data")
